@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile_final/helpers/custom_text.dart';
 import 'package:mobile_final/helpers/screen_navigation.dart';
 import 'package:mobile_final/models/TrainingPlan.dart';
+import 'package:mobile_final/screens/edit_training_plan.dart';
 import 'package:mobile_final/screens/trainer_locker.dart';
 import 'package:mobile_final/services/training_plan_manager.dart';
 import 'package:mobile_final/widgets/TrainingDayTile.dart';
@@ -32,6 +33,11 @@ class _TrainingPlanPageTrainerState extends State<TrainingPlanPageTrainer> {
         title: CustomText(text: "My Training Plan", size: 17, color: Colors.white, weight: FontWeight.bold,),
         backgroundColor: Colors.deepPurpleAccent,
         elevation: 0,
+        actions: [
+          IconButton(onPressed: (){
+              changeScreen(context, EditTrainingPlan(trainingPlan: widget.trainingPlan,));
+          }, icon: Icon(Icons.edit , color: Colors.white,))
+        ],
       ),
       body: SafeArea(
         child: Container(

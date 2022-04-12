@@ -106,6 +106,31 @@ class Trainer_Manager{
        return 0;
      }
    }
+   
+   double getTotalEarnings(){
+     
+     double total = 0;
+     
+     for(TrainingPlan trainingPlan in globals.currTrainer.trainingPlans){
+       total = total + trainingPlan.userIds.length*trainingPlan.price;
+     } 
+
+     return total;
+
+   }
+
+   List<TrainingPlan> trainingPlanOrderHistory(){
+
+     List<TrainingPlan> result = [];
+
+     for(TrainingPlan trainingPlan in globals.currTrainer.trainingPlans){
+       for(String userId in trainingPlan.userIds){
+         result.insert(0, trainingPlan);
+       }
+     } 
+     return result;
+
+   }
 
 
 }

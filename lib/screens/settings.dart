@@ -31,6 +31,19 @@ class _SettingsState extends State<Settings> {
                 weight: FontWeight.bold,
                 size: 20,
               ),
+              SizedBox(height: 20,),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Icon(Icons.person, size: 50,),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      CustomText(text: "${globals.currUser.firstName} ${globals.currUser.lastName}" , size: 23, color: globals.textColor2, weight: FontWeight.bold,)
+                    ],
+                  )
+                ],
+              ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: GestureDetector(

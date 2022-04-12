@@ -14,7 +14,8 @@ import 'package:mobile_final/services/training_plan_manager.dart';
 import '../models/TrainingPlan.dart';
 
 class TrainingPlanLP extends StatefulWidget {
-  const TrainingPlanLP({Key key, this.trainingPlan , this.commentsList}) : super(key: key);
+  const TrainingPlanLP({Key key, this.trainingPlan, this.commentsList})
+      : super(key: key);
 
   final TrainingPlan trainingPlan;
   final List<Comment> commentsList;
@@ -27,10 +28,11 @@ class _TrainingPlanLPState extends State<TrainingPlanLP> {
   @override
   Widget build(BuildContext context) {
     var commentController = TextEditingController();
-    int index = 0;
+    bool posted = false;
+
     //List<Comment> comments_on_page = widget.commentsList.sublist(index,index+2);
 
-    String text = "Empty";
+    String textButton = "POST COMMENT";
     Trainer trainer =
         Trainer_Manager().getByIdLocal(widget.trainingPlan.trainerId);
     String buttonText = "Buy Now";
@@ -64,7 +66,7 @@ class _TrainingPlanLPState extends State<TrainingPlanLP> {
                     children: [
                       TextField(
                         controller: commentController,
-                        maxLines: 8,
+                        maxLines: 4,
                         keyboardType: TextInputType.multiline,
                         decoration: InputDecoration(
                             hintText: "Write your opinion",
@@ -73,15 +75,19 @@ class _TrainingPlanLPState extends State<TrainingPlanLP> {
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: GestureDetector(
-                          onTap: () async{
-                            Comment comment = await Comments_Manager().createComment(commentController.text, widget.trainingPlan.id);
-                            setState(() {
-                              widget.commentsList.insert(0, comment);
-
-                            });
-                            Navigator.pop(context);
-                          },
-                          child: containerButton(110, 60, "POST COMMENT")),
+                            onTap: () async {
+                              String text = commentController.text;
+                              commentController.text = "POSTING COMMENT , PLEASE WAIT!";
+                              Comment comment = await Comments_Manager()
+                                  .createComment(text,
+                                      widget.trainingPlan.id);
+                              await Future.delayed(const Duration(seconds: 2));
+                              setState(() {
+                                widget.commentsList.insert(0, comment);
+                              });
+                              Navigator.pop(context);
+                            },
+                            child: containerButton(110, 60, textButton)),
                       )
                     ],
                   ),
@@ -119,6 +125,7 @@ class _TrainingPlanLPState extends State<TrainingPlanLP> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                SizedBox(height: 40,),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -259,61 +266,78 @@ class _TrainingPlanLPState extends State<TrainingPlanLP> {
                     //   child:containerButton( MediaQuery.of(context).size.width*0.33 , 40 , "Add Comment"))
                   ],
                 ),
-          
-                ListView(
-                  shrinkWrap: true,
-                  physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
-                  children: [
-                    Column(
-                      children: widget.commentsList.map((item) =>
-                      Padding(
+                Container(
+                  height: 140,
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: widget.commentsList.length,
+                    itemBuilder: (context, index) {
+                      return Padding(
                         padding: const EdgeInsets.all(16.0),
                         child: Container(
-                          width: MediaQuery.of(context).size.width,
-                          height: 80,
+                          width: MediaQuery.of(context).size.width*0.7,
+                          height: 100,
                           decoration: BoxDecoration(
-                            color: Colors.grey.shade300,
-                            borderRadius: BorderRadius.circular(20)
-                          ),
+                              color: Colors.grey.shade300,
+                              borderRadius: BorderRadius.circular(20)),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     Row(
                                       children: [
-                                        Icon(Icons.account_circle_outlined , color: textColor2 ,size: 16,),
-                                        SizedBox(width: 6,),
-                                        CustomText(text: "${item.firstName} ${item.lastName}",  size: 17, weight: FontWeight.bold, color: textColor2,),
+                                        Icon(
+                                          Icons.account_circle_outlined,
+                                          color: textColor2,
+                                          size: 16,
+                                        ),
+                                        SizedBox(
+                                          width: 6,
+                                        ),
+                                        CustomText(
+                                          text:
+                                              "${widget.commentsList[index].firstName} ${widget.commentsList[index].lastName}",
+                                          size: 17,
+                                          weight: FontWeight.bold,
+                                          color: textColor2,
+                                        ),
                                       ],
                                     ),
                                     Row(
                                       children: [
-                                        CustomText(text: "${item.dayCreated} ${item.monthCreated.toLowerCase()} ${item.yearCreated}", size: 17, weight: FontWeight.bold, color: textColor2,),
-                                        Icon(Icons.timelapse , color: textColor2 ,size: 16,),
+                                        CustomText(
+                                          text:
+                                              "${widget.commentsList[index].dayCreated} ${widget.commentsList[index].monthCreated.toLowerCase()} ${widget.commentsList[index].yearCreated}",
+                                          size: 17,
+                                          weight: FontWeight.bold,
+                                          color: textColor2,
+                                        ),
+                                        Icon(
+                                          Icons.timelapse,
+                                          color: textColor2,
+                                          size: 16,
+                                        ),
                                       ],
                                     )
                                   ],
                                 ),
                               ),
-      
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
-                                child: CustomText(text: "\"${item.comment}\""),
+                                child: CustomText(text: "\"${widget.commentsList[index].comment}\"" , weight: FontWeight.bold, size: 17, color: textColor2,),
                               )
-      
                             ],
                           ),
                         ),
-                      )).toList()
-                    )
-                  ],
+                      );
+                    },
+                  ),
                 ),
-               
-                
               ],
             ),
           ),

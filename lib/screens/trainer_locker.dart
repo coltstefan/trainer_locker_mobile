@@ -3,6 +3,7 @@ import 'package:mobile_final/helpers/custom_text.dart';
 import 'package:mobile_final/helpers/theme.dart';
 import 'package:mobile_final/models/TrainingPlan.dart';
 import 'package:mobile_final/screens/dashboard.dart';
+import 'package:mobile_final/screens/earnings_screen.dart';
 import 'package:mobile_final/screens/start.dart';
 import 'package:mobile_final/screens/trainingPlan_trainer.dart';
 import 'package:mobile_final/services/api_manager.dart';
@@ -155,7 +156,6 @@ class _TrainerLockerState extends State<TrainerLocker> {
                                     Row(
                                       children: [
                                         Icon(Icons.arrow_upward , color: Colors.green, size: 13,),
-                                        CustomText(text: "15%", color: Colors.green, size: 13,)
                                       ],
                                     )
                                   ],
@@ -200,11 +200,10 @@ class _TrainerLockerState extends State<TrainerLocker> {
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
-                                    CustomText(text: "12000 USD" , color: Colors.deepPurpleAccent, weight: FontWeight.bold, size: 15,),
+                                    CustomText(text: "${Trainer_Manager().getTotalEarnings()} USD" , color: Colors.deepPurpleAccent, weight: FontWeight.bold, size: 15,),
                                     Row(
                                       children: [
                                         Icon(Icons.arrow_upward , color: Colors.green, size: 13,),
-                                        CustomText(text: "12%", color: Colors.green, size: 13,)
                                       ],
                                     )
                                   ],
@@ -318,6 +317,46 @@ class _TrainerLockerState extends State<TrainerLocker> {
                   ),
                 ),
               ),
+
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    CustomText(text: "Earnings", color: globals.textColor1, size: 21, weight: FontWeight.bold,),
+                    Container(
+                      width: MediaQuery.of(context).size.width*0.6,
+                      height: 30,
+                      decoration: BoxDecoration(
+                        color: globals.textPurple,
+                        borderRadius: BorderRadius.circular(10),
+                        boxShadow: [
+                          BoxShadow(
+                            color: globals.textColor2,
+                            blurRadius: 3,
+                            offset: Offset(1,1)
+                          ),
+                        ]
+                      ),
+                      child: Center(
+                        child: GestureDetector(
+                          onTap: (){
+                            changeScreen(context, EarningsScreen(trainingPlans: Trainer_Manager().trainingPlanOrderHistory(),));
+                          },
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                               CustomText(text: "See Earnings", color: Colors.white, size: 19, weight: FontWeight.bold,),
+                               SizedBox(width: 5,),
+                               Icon(Icons.auto_graph , color: Colors.white, size: 19,)
+                            ],
+                          ),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              )
               
         
         
