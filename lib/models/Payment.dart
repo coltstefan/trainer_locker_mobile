@@ -11,23 +11,43 @@ String paymentToJson(Payment data) => json.encode(data.toJson());
 class Payment {
     Payment({
         this.id,
-        this.earningsId,
-        this.total,
+        this.userId,
+        this.trainerId,
+        this.trainingPlanId,
+        this.payment,
+        this.yearCreated,
+        this.monthCreated,
+        this.dayCreated,
     });
 
     String id;
-    String earningsId;
-    int total;
+    String userId;
+    String trainerId;
+    String trainingPlanId;
+    double payment;
+    int yearCreated;
+    String monthCreated;
+    int dayCreated;
 
     factory Payment.fromJson(Map<String, dynamic> json) => Payment(
-        id: json["_id"],
-        earningsId: json["earningsId"],
-        total: json["total"],
+        id: json["id"],
+        userId: json["userId"],
+        trainerId: json["trainerId"],
+        trainingPlanId: json["trainingPlanId"],
+        payment: json["payment"],
+        yearCreated: json["yearCreated"],
+        monthCreated: json["monthCreated"],
+        dayCreated: json["dayCreated"],
     );
 
     Map<String, dynamic> toJson() => {
-        "_id": id,
-        "earningsId": earningsId,
-        "total": total,
+        "id": id,
+        "userId": userId,
+        "trainerId": trainerId,
+        "trainingPlanId": trainingPlanId,
+        "payment": payment,
+        "yearCreated": yearCreated,
+        "monthCreated": monthCreated,
+        "dayCreated": dayCreated,
     };
 }

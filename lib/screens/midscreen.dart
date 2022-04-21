@@ -7,6 +7,7 @@ import 'package:mobile_final/screens/dashboard.dart';
 
 import '../services/api_manager.dart';
 import '../services/exercise_manager.dart';
+import '../services/prog_overload_manager.dart';
 import '../services/trainer_manager.dart';
 import '../services/training_plan_manager.dart';
 import 'package:mobile_final/helpers/globals.dart' as globals;

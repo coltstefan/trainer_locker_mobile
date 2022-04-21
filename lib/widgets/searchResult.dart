@@ -41,7 +41,7 @@ class _SearchResultState extends State<SearchResult>{
     return GestureDetector(
       onTap: () async{
         List<Comment> commentsList = await Comments_Manager().getCommentsByTp(widget.trainingPlan.id);
-        changeScreen(context, TrainingPlanLP(trainingPlan: widget.trainingPlan, commentsList: commentsList,));
+        changeScreen(context, TrainingPlanLP(trainingPlan: widget.trainingPlan, commentsList: commentsList.reversed.toList(),));
       },
       child: Padding(
         padding: const EdgeInsets.all(12.0),

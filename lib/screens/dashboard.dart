@@ -23,6 +23,7 @@ import '../models/TrainingDay.dart';
 import '../models/TrainingPlan.dart';
 import '../models/User.dart';
 import '../services/comment_manager.dart';
+import '../services/prog_overload_manager.dart';
 import '../services/trainer_manager.dart';
 import '../services/training_plan_manager.dart';
 class Dashboard extends StatefulWidget {
@@ -40,6 +41,7 @@ class _DashboardState extends State<Dashboard> {
   @override
     void initState(){
         super.initState();
+        
         
     }
     

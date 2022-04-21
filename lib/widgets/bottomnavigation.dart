@@ -1,6 +1,7 @@
 
 import 'package:mobile_final/helpers/screen_navigation.dart';
 import 'package:mobile_final/screens/dashboard.dart';
+import 'package:mobile_final/screens/progressive_overload.dart';
 import 'package:mobile_final/screens/search.dart';
 import 'package:mobile_final/screens/settings.dart';
 import 'package:mobile_final/screens/trainer_dashboard.dart';
@@ -8,6 +9,7 @@ import 'package:mobile_final/screens/trainer_locker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_final/helpers/globals.dart' as globals;
+import 'package:mobile_final/services/prog_overload_manager.dart';
 
 import '../services/api_manager.dart';
 
@@ -35,9 +37,12 @@ class BottomNavBarFb1 extends StatelessWidget {
             children: [
               IconBottomBar(
                   text: "",
-                  icon: Icons.calendar_today,
+                  icon: Icons.fitness_center,
                   selected: false,
-                  onPressed: () {}),
+                  onPressed: () async{
+                    await ProgressiveOverload_Manager().getPOVByUser();
+                    changeScreen(context, ProgressiveOverload());
+                  }),
               IconBottomBar(
                   text: "Search",
                   icon: Icons.search_outlined,

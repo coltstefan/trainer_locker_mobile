@@ -329,6 +329,33 @@ class TrainingPlan_Manager{
         TrainingPlan trainingPlan = await TrainingPlan_Manager().getTrainingPlanById(trainingPlanId);
         globals.currUser.trainingPlansLOCAL.add(trainingPlan);
         addClientToTrainingPlan(trainingPlanId);
+        print("TRAINING PLAN PAYMENT = ${trainingPlan.toJson()}");
+
+        var response = await http.post(Uri.parse("$api/api/v1/payment/create"),
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+            "Access-Control-Allow-Origin":
+                "*", // Required for CORS support to work
+            //"Access-Control-Allow-Credentials": true, // Required for cookies, authorization headers with HTTPS
+            "Access-Control-Allow-Headers":
+                "Origin,Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,locale",
+            "Access-Control-Allow-Methods": "POST, OPTIONS"
+          },
+          body: jsonEncode({
+            "userId":globals.currUser.id,
+            "trainerId":trainingPlan.trainerId,
+            "trainingPlanId":trainingPlanId,
+            "payment":trainingPlan.price
+          }));
+
+          if(response.statusCode == 200){
+            print("PAYMENT CREATED");
+          }
+          else{
+            print(response.body);
+          }
+
+
 
         // await getAllTrainingPlans();
         await Trainer_Manager().getAllTrainers();
@@ -382,6 +409,45 @@ class TrainingPlan_Manager{
       if(trainingPlan.id == trainingPlanId){
 
         trainingPlan.userIds.add(globals.currUser.id);
+
+      }
+    }
+
+  }
+
+  TrainingPlan getTrainingPlanByIdLOCAL(String id){
+    return globals.allTrainingPlans.firstWhere((element) => element.id == id);
+  }
+
+  
+
+  Future<void> createAllPayments() async{
+
+    for(TrainingPlan trainingPlan in globals.allTrainingPlans){
+      for(String userId in trainingPlan.userIds){
+        var response = await http.post(Uri.parse("$api/api/v1/payment/create"),
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+            "Access-Control-Allow-Origin":
+                "*", // Required for CORS support to work
+            //"Access-Control-Allow-Credentials": true, // Required for cookies, authorization headers with HTTPS
+            "Access-Control-Allow-Headers":
+                "Origin,Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,locale",
+            "Access-Control-Allow-Methods": "POST, OPTIONS"
+          },
+          body: jsonEncode({
+            "userId":userId,
+            "trainerId":trainingPlan.trainerId,
+            "trainingPlanId":trainingPlan.id,
+            "payment":trainingPlan.price
+          }));
+
+          if(response.statusCode == 200){
+            print("PAYMENT CREATED");
+          }
+          else{
+            print(response.body);
+          }
 
       }
     }

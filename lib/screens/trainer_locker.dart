@@ -7,6 +7,7 @@ import 'package:mobile_final/screens/earnings_screen.dart';
 import 'package:mobile_final/screens/start.dart';
 import 'package:mobile_final/screens/trainingPlan_trainer.dart';
 import 'package:mobile_final/services/api_manager.dart';
+import 'package:mobile_final/services/payment_service.dart';
 import 'package:mobile_final/services/trainer_manager.dart';
 import 'package:mobile_final/services/training_plan_manager.dart';
 import 'package:mobile_final/widgets/bottomnavigation.dart';
@@ -340,7 +341,8 @@ class _TrainerLockerState extends State<TrainerLocker> {
                       ),
                       child: Center(
                         child: GestureDetector(
-                          onTap: (){
+                          onTap: () async{
+                            await PaymentManager().getPaymentsByCurrTrainer();
                             changeScreen(context, EarningsScreen(trainingPlans: Trainer_Manager().trainingPlanOrderHistory(),));
                           },
                           child: Row(

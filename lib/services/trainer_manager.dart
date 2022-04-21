@@ -38,7 +38,7 @@ class Trainer_Manager{
 
             for(var fp in trainer.fitnessProgrammes){
 
-                TrainingPlan tp_current = await TrainingPlan_Manager().getTrainingPlanById(fp);
+                TrainingPlan tp_current = await TrainingPlan_Manager().getTrainingPlanByIdLOCAL(fp);
                 trainer.trainingPlans.add(tp_current);
                 try{
                   trainer.totalOrders = trainer.totalOrders + tp_current.userIds.length;
@@ -54,7 +54,7 @@ class Trainer_Manager{
            
           }
 
-          await Future.delayed(const Duration(seconds: 1));
+          //await Future.delayed(const Duration(seconds: 1));
 
         }
 
